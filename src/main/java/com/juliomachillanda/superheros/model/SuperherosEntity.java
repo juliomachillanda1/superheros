@@ -4,9 +4,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "superheros")
-public class superheros {
+public class SuperherosEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "NAME")
@@ -37,5 +37,14 @@ public class superheros {
 
     public void setCharacteristicsSuperHeroe(String characteristicsSuperHeroe) {
         this.characteristicsSuperHeroe = characteristicsSuperHeroe;
+    }
+
+    @Override
+    public String toString() {
+        return "SuperherosEntity{" +
+                "id=" + id +
+                ", nameSuperHeroe='" + nameSuperHeroe + '\'' +
+                ", characteristicsSuperHeroe='" + characteristicsSuperHeroe + '\'' +
+                '}';
     }
 }
