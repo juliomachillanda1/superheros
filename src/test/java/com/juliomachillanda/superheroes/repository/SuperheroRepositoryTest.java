@@ -1,75 +1,82 @@
-package com.juliomachillanda.superheroes;
+package com.juliomachillanda.superheroes.repository;
 
+import com.juliomachillanda.superheroes.builder.SuperheroBuilder;
 import com.juliomachillanda.superheroes.domain.Superhero;
-import com.juliomachillanda.superheroes.repository.SuperheroRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 public class SuperheroRepositoryTest {
 
     @Autowired
-    private SuperheroRepository superheroeRepository;
+    private SuperheroRepository superheroRepository;
 
     @Test
-    public void testSave() {
-        Superhero superhero = new Superhero();
-        superhero.setName("Spiderman");
-        superhero.setSuperpower("Spider senses");
-        superheroeRepository.save(superhero);
+    public void testSaveOk() {
+        Superhero superhero = SuperheroBuilder.getSpiderMan();
+
+        superheroRepository.save(superhero);
+
         assertNotNull(superhero.getId());
     }
 
     @Test
-    public void testFindById() {
-        Superhero superhero = new Superhero();
-        superhero.setName("Iron Man");
-        superhero.setSuperpower("Suit of armor");
+    public void testFindByIdOk() {
+        Superhero superhero = SuperheroBuilder.getIronMan();
+        superheroRepository.save(superhero);
 
-        superheroeRepository.save(superhero);
+        Optional<Superhero> foundSuperhero = superheroRepository.findById(superhero.getId());
 
-        Optional<Superhero> foundSuperhero = superheroeRepository.findById(superhero.getId());
-
-        assertEquals(superhero.getName(), foundSuperhero.stream().findAny().get().getName());
-        assertEquals(superhero.getSuperpower(), foundSuperhero.stream().findAny().get().getSuperpower());
+        assertTrue(foundSuperhero.isPresent());
+        assertEquals("Iron Man", foundSuperhero.get().getName());
+        assertEquals("Suit of armor", foundSuperhero.get().getSuperpower());
     }
 
     @Test
-    public void testFindAll() {
-        Superhero superhero1 = new Superhero();
-        superhero1.setName("Wonder Woman");
-        superhero1.setSuperpower("Super strength");
+    public void testFindAllOk() {
+        Superhero wonderWoman = SuperheroBuilder.getWonderWoman();
+        superheroRepository.save(wonderWoman);
 
-        superheroeRepository.save(superhero1);
+        Superhero batman = SuperheroBuilder.getBatman();
+        superheroRepository.save(batman);
 
-        Superhero superhero2 = new Superhero();
-        superhero2.setName("Batman");
-        superhero2.setSuperpower("Utility belt");
-
-        superheroeRepository.save(superhero2);
-
-        List<Superhero> superheroes = superheroeRepository.findAll();
+        List<Superhero> superheroes = superheroRepository.findAll();
 
         assertEquals(2, superheroes.size());
-        assertEquals(superhero1.getName(), superheroes.get(0).getName());
-        assertEquals(superhero2.getName(), superheroes.get(1).getName());
+        assertEquals("Wonder Woman", superheroes.get(0).getName());
+        assertEquals("Batman", superheroes.get(1).getName());
     }
 
-    /*@Test
-    @Ignore
+    @Test
     public void testDeleteById() {
-        SuperHeros superhero = new SuperHeros();
-        superhero.setName("Superman");
-        superhero.setSuperPower("Flying and super strength");
+        Superhero superhero = SuperheroBuilder.getSpiderMan();
+        superheroRepository.save(superhero);
 
-        superherosRepository.deleteById(superhero.getId());
+        superheroRepository.deleteById(superhero.getId());
 
-        assertNull(superherosRepository.findById(superhero.getId()));
-    }*/
+        Optional<Superhero> superheroOptional = superheroRepository.findById(superhero.getId());
+        assertTrue(superheroOptional.isEmpty());
+    }
+
+    @Test
+    public void testGetByNameContaining() {
+        Superhero spiderMan = SuperheroBuilder.getSpiderMan();
+        Superhero ironMan = SuperheroBuilder.getIronMan();
+        Superhero hulk = SuperheroBuilder.getHulk();
+        superheroRepository.saveAll(List.of(hulk, spiderMan, ironMan));
+
+        List<Superhero> superheroes = superheroRepository.findByNameContaining("Man");
+
+        assertEquals(2, superheroes.size());
+        assertEquals("Spider Man", superheroes.get(0).getName());
+        assertEquals("Iron Man", superheroes.get(1).getName());
+    }
 }
