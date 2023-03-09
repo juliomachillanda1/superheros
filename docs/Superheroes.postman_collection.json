@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "0d02c784-8abb-4bae-821a-75fdd8a8d963",
+		"name": "Superheroes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all superheroes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/superheroes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"superheroes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get superhero by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/superheroes/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"superheroes",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create superhero",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Aquaman\",\r\n    \"superpower\": \"Trident of neptune\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/superheroes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"superheroes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update superhero",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 4,\r\n    \"name\": \"Aqua Man\",\r\n    \"superpower\": \"Trident of neptune\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/superheroes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"superheroes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete superhero",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/superheroes/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"superheroes",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search all by name containing",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/superheroes/search?name=man",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"superheroes",
+						"search"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "man"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
