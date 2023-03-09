@@ -1,9 +1,11 @@
-package com.juliomachillanda.superheros.repository;
+package com.juliomachillanda.superheroes.repository;
 
-import com.juliomachillanda.superheros.model.SuperHeros;
+import com.juliomachillanda.superheroes.domain.Superhero;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface SuperherosRepository extends JpaRepository<SuperHeros, Long> {
+import java.util.List;
+
+public interface SuperheroRepository extends JpaRepository<Superhero, Long> {
+
+    List<Superhero> findByNameContaining(String name);
 }
