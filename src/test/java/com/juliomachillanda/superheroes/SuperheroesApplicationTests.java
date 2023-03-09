@@ -1,10 +1,10 @@
-package com.juliomachillanda.superheros;
+package com.juliomachillanda.superheroes;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SuperherosApplicationTests {
+class SuperheroesApplicationTests {
 
 	@Test
 	void contextLoads() {
