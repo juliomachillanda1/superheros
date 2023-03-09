@@ -1,69 +1,61 @@
-package com.juliomachillanda.superheros.service.impl;
+package com.juliomachillanda.superheroes.service.impl;
 
-import com.juliomachillanda.superheros.model.SuperHeros;
-import com.juliomachillanda.superheros.repository.SuperherosRepository;
-import com.juliomachillanda.superheros.service.SuperHerosService;
+import com.juliomachillanda.superheroes.domain.Superhero;
+import com.juliomachillanda.superheroes.dto.SuperheroDTO;
+import com.juliomachillanda.superheroes.mapper.SuperheroMapper;
+import com.juliomachillanda.superheroes.repository.SuperheroRepository;
+import com.juliomachillanda.superheroes.service.SuperheroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.NoSuchElementException;
 
 @Service
-public class SuperHerosServiceImpl implements SuperHerosService {
+public class SuperheroServiceImpl implements SuperheroService {
 
     @Autowired
-    private SuperherosRepository superherosRepository;
+    private SuperheroRepository superheroRepository;
+
+    @Autowired
+    private SuperheroMapper superheroMapper;
 
     @Override
-    public SuperHeros create(SuperHeros superHeros) {
-        return superherosRepository.save(superHeros);
-    }
-
-    @Override
-    public SuperHeros update(SuperHeros superHeros) {
-        return superherosRepository.save(superHeros);
-    }
-
-    @Override
-    public SuperHeros findById(Long id) {
-       Optional<SuperHeros> superHeroOptional = superherosRepository.findById(id);
-    return superHeroOptional.orElse(null);
+    public SuperheroDTO create(Superhero superHero) {
+        Superhero superhero = superheroRepository.save(superHero);
+        return superheroMapper.entityToDto(superhero);
     }
 
     @Override
-    public List<SuperHeros> findAll() {
-        return superherosRepository.findAll();
+    public SuperheroDTO update(Superhero superHero) {
+        Superhero superhero = superheroRepository.save(superHero);
+        return superheroMapper.entityToDto(superhero);
     }
 
     @Override
-    public void delete(Long id) {
-        superherosRepository.deleteById(id);
+    public SuperheroDTO findById(Long id) {
+        Superhero superhero = superheroRepository.findById(id)
+                .orElseThrow(
+                        () -> new NoSuchElementException(String.format("Superhero with id %d not found", id))
+                );
+
+        return superheroMapper.entityToDto(superhero);
     }
 
-    public List<String> getBy(String ch){
-        StringBuilder st = new StringBuilder();
-        List<SuperHeros> listSuperHeros = findAll();
-        List matchSuperHeroe = new ArrayList();
-        for(SuperHeros superHeroe: listSuperHeros){
-            String superHeroeName = superHeroe.getName();
-            if(Boolean.FALSE.equals(hasLetter(ch, superHeroeName))){
-                matchSuperHeroe.add(superHeroeName);
-            }
-        }
-
-        return matchSuperHeroe;
+    @Override
+    public List<SuperheroDTO> findAll() {
+        List<Superhero> superheroes = superheroRepository.findAll();
+        return superheroMapper.entitiesToDtos(superheroes);
     }
 
-    public static boolean hasLetter (String word, String superHeroe){
-        Pattern p = Pattern.compile(superHeroe);
-        if (word == null)return false;
-
-        Matcher m = p.matcher(word);
-        return m.matches();
+    @Override
+    public void deleteById(Long id) {
+        superheroRepository.deleteById(id);
     }
+
+    public List<SuperheroDTO> findByNameContaining(String name) {
+        List<Superhero> superheroes = superheroRepository.findByNameContaining(name);
+        return superheroMapper.entitiesToDtos(superheroes);
+    }
+
 }

@@ -1,21 +1,22 @@
-package com.juliomachillanda.superheros.service;
+package com.juliomachillanda.superheroes.service;
 
-import com.juliomachillanda.superheros.model.SuperHeros;
+import com.juliomachillanda.superheroes.domain.Superhero;
+import com.juliomachillanda.superheroes.dto.SuperheroDTO;
 
 import java.util.List;
 
-public interface SuperHerosService {
+public interface SuperheroService {
 
-    SuperHeros create(SuperHeros superHeros);
+    SuperheroDTO create(Superhero superHero);
 
-    SuperHeros update(SuperHeros superHeros);
+    SuperheroDTO update(Superhero superHero);
 
-    SuperHeros findById(Long id);
+    SuperheroDTO findById(Long id);
 
-    List<SuperHeros> findAll();
+    List<SuperheroDTO> findAll();
 
-    void delete(Long id);
+    void deleteById(Long id);
 
-    List<String> getBy(String ch);
+    List<SuperheroDTO> findByNameContaining(String name);
 
 }
